@@ -19,6 +19,7 @@
   (:require [clojure.tools.nrepl :as repl]
             [backtick]
             [clojure.string :as str]
+            [clojure.test.junit]
             [fntest.jboss :as jboss]))
 
 (def ^:dynamic *nrepl-conn*)
@@ -88,7 +89,15 @@
  (println "Running clojure.test tests...")
  (println "Testing namespaces in container:" nses)
  (execute (pr-str (backtick/template (apply require '~nses))))
- (execute (pr-str (backtick/template (clojure.test/successful? (apply clojure.test/run-tests '~nses))))))
+ (execute (pr-str (backtick/template
+                   (clojure.test/successful?
+                    (with-open [testresults
+                                (java.io.FileWriter.
+                                 "testresults.xml")]
+
+                      (binding [clojure.test/*test-out* testresults]
+                        (clojure.test.junit/with-junit-output
+                          (apply clojure.test/run-tests '~nses)))))))))
 
 (defn run-tests
   "Load test namespaces beneath dir and run them"
@@ -102,4 +111,3 @@
                                                    false)))))
       (midje-tests nses)
       (clojure-test-tests nses))))
-

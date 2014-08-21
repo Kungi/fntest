@@ -1,4 +1,4 @@
-(defproject org.immutant/fntest "0.5.4"
+(defproject org.immutant/fntest "0.5.5"
   :description "A harness for running Immutant integration tests"
   :url "https://github.com/immutant/fntest"
   :license {:name "Eclipse Public License"
@@ -8,6 +8,6 @@
                  [backtick "0.1.0"]
                  [bultitude "0.2.6"]]
   :profiles {:dev
-             {:dependencies [[org.clojure/clojure "1.5.1"]]}}
+             {:dependencies [[org.clojure/clojure "1.6.0"]]}}
   :signing {:gpg-key "BFC757F9"}
   :lein-release {:deploy-via :clojars})
